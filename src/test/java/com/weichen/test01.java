@@ -53,4 +53,9 @@ public class test01 {
         System.out.println(name);
 
     }
+    @Test
+    public void test04()  {
+       System.out.println("hello world");
+
+    }
 }
