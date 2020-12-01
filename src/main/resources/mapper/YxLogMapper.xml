@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weichen.log.dao.YxLogDao">
+    <resultMap id="logMap" type="com.weichen.log.entity.YxLog">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="operation_time" property="operationTime"/>
+        <result column="table_name" property="tableName"/>
+        <result column="operation_method" property="operationMethod"/>
+        <result column="method_name" property="methodName"/>
+        <result column="data_id" property="dataId"/>
+        <result column="data_info" property="dataInfo"/>
+        <result column="version" property="version"/>
+    </resultMap>
+    <select id="selectLogPageList" resultMap="logMap">
+       select id, username, operation_time, table_name, operation_method, method_name, data_id, data_info, version
+       from yx_log
+       ORDER BY operation_time DESC
+       limit #{startSize},#{pageSize}
+   </select>
+    <select id="selectOneData" resultMap="logMap">
+       select id, username, operation_time, table_name, operation_method, method_name, data_id, data_info, version
+       from yx_log
+   </select>
+    <select id="findTotalCounts" resultType="java.lang.Long">
+        select count(id) from yx_log
+    </select>
+    <insert id="insertOperation">
+        insert into yx_log
+        (id, username, operation_time, table_name, operation_method, method_name, data_id, data_info, version)
+        values (#{id},#{username},#{operationTime},#{tableName},#{operationMethod},
+        #{methodName},#{dataId},#{dataInfo},#{version})
+    </insert>
+    <update id="updateOperation">
+        /*update yx_log
+        set cate_name=#{cateName},levels=#{levels},parent_id=#{parentId}
+        where id=#{id}*/
+    </update>
+</mapper>

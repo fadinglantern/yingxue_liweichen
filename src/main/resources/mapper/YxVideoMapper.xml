@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weichen.dao.YxVideoDao">
+    <resultMap id="videoMap" type="com.weichen.entity.YxVideo">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="brief" property="brief"/>
+        <result column="cover_path" property="coverPath"/>
+        <result column="video_path" property="videoPath"/>
+        <result column="upload_time" property="uploadTime"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="play_count" property="playCount"/>
+        <result column="cate_name" property="cateName"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="user_id" property="userId"/>
+        <result column="group_id" property="groupId"/>
+        <result column="state" property="state"/>
+    </resultMap>
+    <resultMap id="videoPOMap" type="com.weichen.po.VideoPO">
+        <id column="id" property="id"/>
+        <result column="title" property="videoTitle"/>
+        <result column="brief" property="description"/>
+        <result column="cover_path" property="cover"/>
+        <result column="video_path" property="path"/>
+        <result column="upload_time" property="uploadTime"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="cate_name" property="cateName"/>
+        <result column="pic_img" property="userPhoto"/>
+        <result column="categoryId" property="categoryId"/>
+        <result column="userId" property="userId"/>
+        <result column="nick_name" property="username"/>
+    </resultMap>
+   <!-- <resultMap id="cateVideoPOMap" type="com.weichen.po.CateVideoPO">
+        <id column="id" property="id"/>
+        <result column="title" property="videoTitle"/>
+        <result column="brief" property="description"/>
+        <result column="cover_path" property="cover"/>
+        <result column="video_path" property="path"/>
+        <result column="upload_time" property="uploadTime"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="cate_name" property="cateName"/>
+        <result column="pic_img" property="userPhoto"/>
+
+        <result column="categoryId" property="categoryId"/>
+        <result column="userId" property="userId"/>
+        <result column="nick_name" property="username"/>
+    </resultMap>-->
+    <select id="selectVideoPageList" resultMap="videoMap">
+        SELECT v.id,v.title,v.brief,v.cover_path,v.video_path,v.upload_time,y.cate_name,v.category_id,v.user_id,v.state
+        FROM
+        yx_video v LEFT JOIN yx_category y
+        ON v.category_id=y.id
+        ORDER BY v.upload_time
+        limit #{startSize},#{pageSize}
+    </select>
+    <select id="selectOneVideo" resultMap="videoMap">
+        select v.id,v.title,v.brief,v.cover_path,v.video_path,v.upload_time,y.cate_name,v.category_id,v.user_id,v.state
+        FROM
+        yx_video v LEFT JOIN yx_category y
+        ON v.category_id=y.id
+        WHERE v.id=#{id}
+        ORDER BY v.id
+    </select>
+    <select id="findTotalCounts" resultType="java.lang.Long">
+        select count(id) from yx_video
+    </select>
+    <update id="updateVideoState" parameterType="YxVideo">
+        update yx_video
+        set state=#{state}
+        where id=#{id}
+    </update>
+    <insert id="insertOneVideo" parameterType="YxVideo">
+        insert into yx_video
+        (id, title, brief, upload_time, like_count, play_count,
+        category_id, user_id, group_id, state)
+        values
+        (#{id},#{title},#{brief},#{uploadTime},#{likeCount},#{playCount},
+        #{categoryId},#{userId},#{groupId},#{state})
+    </insert>
+    <update id="updateVideoPath" parameterType="YxVideo">
+        update yx_video
+        set video_path=#{videoPath},cover_path=#{coverPath}
+        where id=#{id}
+    </update>
+    <update id="updateVideoData" parameterType="YxVideo">
+        update yx_video
+        set title=#{title},brief=#{brief},category_id=#{categoryId},user_id=#{userId}
+        where id=#{id}
+    </update>
+    <delete id="deleteOneVideo" parameterType="java.lang.String">
+        delete from yx_video
+        where id=#{id}
+    </delete>
+
+    <select id="queryByReleaseTime" resultMap="videoPOMap">
+        select yv.id,yv.title,yv.brief,yv.cover_path,yv.video_path,yv.upload_time,yv.like_count,
+        yc.cate_name,yu.pic_img
+        from yx_category yc
+        right join yx_video yv on yc.id = yv.category_id
+        left join yx_user yu on yv.user_id = yu.id
+        ORDER BY yv.upload_time DESC
+    </select>
+    <select id="queryCateVideoList" resultMap="videoPOMap">
+        select yv.id,yv.title,yv.brief,yv.cover_path,yv.video_path,yv.upload_time,yv.like_count,
+        yc.cate_name,yc.id as categoryId,yu.pic_img,yu.id as userId,yu.nick_name
+        from yx_category yc
+        right join yx_video yv on yc.id = yv.category_id
+        left join yx_user yu on yv.user_id = yu.id
+        where yc.id=#{categoryId}
+        ORDER BY yv.upload_time DESC
+    </select>
+    <select id="queryByLikeVideoName" resultMap="videoPOMap">
+        select yv.id,yv.title,yv.brief,yv.cover_path,yv.video_path,yv.upload_time,yv.like_count,
+        yc.cate_name,yc.id as categoryId,yu.pic_img,yu.id as userId,yu.nick_name
+        from yx_category yc
+        right join yx_video yv on yc.id = yv.category_id
+        left join yx_user yu on yv.user_id = yu.id
+        where yv.title like #{content}
+    </select>
+</mapper>

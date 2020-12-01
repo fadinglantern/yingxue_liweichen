@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weichen.dao.YxAdminDao">
+    <select id="selectByNP" resultType="YxAdmin" parameterType="YxAdmin">
+        select a.id as id,a.username as username,a.password as password
+        from yx_admin a
+        where a.username=#{username}
+    </select>
+</mapper>

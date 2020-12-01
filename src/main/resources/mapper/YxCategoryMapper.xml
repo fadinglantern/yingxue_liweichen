@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weichen.dao.YxCategoryDao">
+    <resultMap id="categoryMap" type="com.weichen.entity.YxCategory">
+        <id column="id" property="id"/>
+        <result column="cate_name" property="cateName"/>
+        <result column="levels" property="levels"/>
+        <result column="parent_id" property="parentId"/>
+    </resultMap>
+    <resultMap id="categoryPOMap" type="com.weichen.po.CategoryPO">
+        <id column="id" property="id"/>
+        <result column="cate_name" property="cateName"/>
+        <result column="levels" property="levels"/>
+        <result column="parent_id" property="parentId"/>
+    </resultMap>
+   <select id="selectFatherPageList" resultMap="categoryMap">
+       select id,cate_name,levels,parent_id
+       from yx_category
+       where levels=1
+       ORDER BY id
+       limit #{startSize},#{pageSize}
+   </select>
+    <select id="selectSonPageListByFId" resultMap="categoryMap">
+        select id,cate_name,levels,parent_id
+        from yx_category
+        where levels=#{levels} and parent_id=#{parentId}
+        ORDER BY id
+        limit #{startSize},#{pageSize}
+    </select>
+    <select id="selectFatherList" resultMap="categoryPOMap">
+        select id,cate_name,levels,parent_id
+        from yx_category
+        where levels=1
+        ORDER BY id
+    </select>
+    <select id="selectSonListByFId" resultMap="categoryPOMap">
+        select id,cate_name,levels,parent_id
+        from yx_category
+        where levels=2 and parent_id=#{id}
+        ORDER BY id
+    </select>
+    <select id="findTotalCounts" resultType="java.lang.Long">
+        select count(id) from yx_category
+        <where>
+            <if test="parentId!=null">
+                levels=#{levels} and parent_id=#{parentId}
+            </if>
+            <if test="parentId==null">
+                and levels=#{levels}
+            </if>
+        </where>
+    </select>
+    <select id="selectOneData" resultMap="categoryMap">
+        select id,cate_name,levels,parent_id
+        from yx_category
+        where id=#{id}
+    </select>
+    <insert id="insertOneData" parameterType="YxCategory">
+        insert into yx_category
+        values (#{id},#{cateName},#{levels},#{parentId})
+    </insert>
+    <update id="updateOneData" parameterType="YxCategory">
+        update yx_category
+        set cate_name=#{cateName},levels=#{levels},parent_id=#{parentId}
+        where id=#{id}
+    </update>
+    <delete id="deleteOneData" parameterType="YxCategory">
+        delete from yx_category
+        where id=#{id}
+    </delete>
+</mapper>

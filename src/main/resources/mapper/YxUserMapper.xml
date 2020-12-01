@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weichen.dao.YxUserDao">
+    <resultMap id="userMap" type="YxUser">
+        <id column="id" property="id"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="user_password" property="userPassword"/>
+        <result column="salt" property="salt"/>
+        <result column="phone" property="phone"/>
+        <result column="pic_img" property="picImg"/>
+        <result column="brief" property="brief"/>
+        <result column="score" property="score"/>
+        <result column="create_date" property="createDate"/>
+        <result column="state" property="state"/>
+        <result column="sex" property="sex"/>
+        <result column="city" property="city"/>
+    </resultMap>
+    <select id="selectByPage" resultMap="userMap">
+        select id,nick_name,user_password,salt,phone,pic_img,brief,score,create_date,state,sex,city
+        from yx_user
+        ORDER BY id
+        limit #{startSize},#{pageSize}
+    </select>
+    <select id="selectAll" resultMap="userMap">
+        select id,nick_name,user_password,salt,phone,pic_img,brief,score,create_date,state,sex,city
+        from yx_user
+        ORDER BY id
+    </select>
+    <select id="selectOneData" resultMap="userMap">
+        select id,nick_name,user_password,salt,phone,pic_img,brief,score,create_date,state,sex,city
+        from yx_user
+        where id=#{id}
+    </select>
+    <select id="selectSexCount" resultType="MyDate">
+        SELECT MONTH(create_date) months,count(id) counts
+        FROM yx_user
+        WHERE sex=#{sex}
+        GROUP BY MONTH(create_date)
+        order by MONTH(create_date)
+    </select>
+    <select id="selectSexCityCount" resultType="MyCity">
+        SELECT u.city as name,count(u.id) as value
+        FROM yx_user u WHERE u.sex=#{sex}
+        GROUP BY u.city
+    </select>
+    <select id="findTotalCounts" resultType="java.lang.Long">
+        select count(id) from yx_user
+    </select>
+    <update id="updateUserState" parameterType="YxUser">
+        update yx_user
+        set state=#{state}
+        where id=#{id}
+    </update>
+    <update id="updateUser" parameterType="YxUser">
+        update yx_user
+        set nick_name=#{nickName},user_password=#{userPassword},salt=#{salt},phone=#{phone},
+        pic_img=#{picImg},brief=#{brief},score=#{score},sex=#{sex}
+        where id=#{id}
+    </update>
+    <update id="updatePicImg" parameterType="YxUser">
+        update yx_user
+        set pic_img=#{picImg}
+        where id=#{id}
+    </update>
+    <insert id="insertOneUser" parameterType="YxUser">
+        insert into yx_user
+        (id, nick_name, user_password, salt, phone,
+         brief, score, create_date, state, sex, city)
+        values
+        (#{id},#{nickName},#{userPassword},#{salt},#{phone},
+        #{brief},#{score},#{createDate},#{state},#{sex},#{city})
+    </insert>
+    <delete id="deleteOneData" parameterType="YxUser">
+        delete from yx_user
+        where id=#{id}
+    </delete>
+</mapper>
