@@ -34,8 +34,8 @@ public class AliyunUtil {
     // Endpoint以杭州为例，其它Region请按实际情况填写。
     private static String endpoint = "http://oss-cn-beijing.aliyuncs.com";
     // 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建RAM账号。
-    private static String accessKeyId = "LTAI4G69A5YsbkZAXeoQmfwq";
-    private static String accessKeySecret = "QSZuKxRfzj6XWHgpxwtrClFCDLPPsb";
+    private static String accessKeyId = "";
+    private static String accessKeySecret = "";
     private final static String product = "Dysmsapi";//短信API产品名称（短信产品名固定，无需修改）
     private final static String domain = "dysmsapi.aliyuncs.com";//短信API产品域名（接口地址固定，无需修改）
     public static String sendPhoneCode(String phoneNum,String signName,String templateCode,String code){
