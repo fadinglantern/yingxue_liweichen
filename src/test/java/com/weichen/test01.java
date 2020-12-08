@@ -28,7 +28,7 @@ public class test01 {
     @Test
     public void test01(){
         GoEasy goEasy = new GoEasy( "http://rest-hangzhou.goeasy.io",
-                "BC-072842fda0594c699c4daf892a840de4");
+                "");
         HashMap<String,Object> map=service.getSexCounts();
         List<Integer> b= (List<Integer>) map.get("boys");
         b.set(2,11);
@@ -44,7 +44,7 @@ public class test01 {
     }
     @Test
     public void test03()  {
-        YxUser user=yxUserDao.selectOneData("8b613b2ae5fa481a9411c9d22217c493");
+        YxUser user=yxUserDao.selectOneData("");
         int index=user.getPicImg().lastIndexOf("/");
         String picName=user.getPicImg().substring(index+1);
         int index2=picName.indexOf("-");
@@ -56,6 +56,5 @@ public class test01 {
     @Test
     public void test04()  {
        System.out.println("hello world");
-
     }
 }

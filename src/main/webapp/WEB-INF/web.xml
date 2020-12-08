@@ -4,8 +4,7 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-  <display-name>Archetype Created Web Application</display-name>
-  <servlet>
+  <!--<servlet>
     <servlet-name>mvc</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <init-param>
@@ -17,13 +16,13 @@
   <servlet-mapping>
     <servlet-name>mvc</servlet-name>
     <url-pattern>/</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping>-->
 
   <!--配置spring工厂文件路径-->
-  <context-param>
+  <!--<context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:spring_core.xml</param-value>
-  </context-param>
+  </context-param>-->
 
   <!--配置编码过滤器-->
   <filter>
